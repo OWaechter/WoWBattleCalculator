@@ -12,6 +12,8 @@
 		A7485DCE28C00DC00072311A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7485DCD28C00DC00072311A /* Assets.xcassets */; };
 		A7485DD128C00DC00072311A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7485DD028C00DC00072311A /* Preview Assets.xcassets */; };
 		A7485DD828C00DE90072311A /* EnemyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7485DD728C00DE90072311A /* EnemyController.swift */; };
+		A7E7D8102921B55F00172402 /* SelectEnemyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E7D80F2921B55F00172402 /* SelectEnemyView.swift */; };
+		A7E7D8122921BFD600172402 /* Enemies.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E7D8112921BFD600172402 /* Enemies.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +23,8 @@
 		A7485DCD28C00DC00072311A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A7485DD028C00DC00072311A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A7485DD728C00DE90072311A /* EnemyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnemyController.swift; sourceTree = "<group>"; };
+		A7E7D80F2921B55F00172402 /* SelectEnemyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectEnemyView.swift; sourceTree = "<group>"; };
+		A7E7D8112921BFD600172402 /* Enemies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enemies.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,7 +59,9 @@
 			children = (
 				A7485DC928C00DBF0072311A /* WoWBattleCalculatorApp.swift */,
 				A7485DCB28C00DBF0072311A /* ContentView.swift */,
+				A7E7D80F2921B55F00172402 /* SelectEnemyView.swift */,
 				A7485DD728C00DE90072311A /* EnemyController.swift */,
+				A7E7D8112921BFD600172402 /* Enemies.swift */,
 				A7485DCD28C00DC00072311A /* Assets.xcassets */,
 				A7485DCF28C00DC00072311A /* Preview Content */,
 			);
@@ -141,6 +147,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A7485DCC28C00DBF0072311A /* ContentView.swift in Sources */,
+				A7E7D8122921BFD600172402 /* Enemies.swift in Sources */,
+				A7E7D8102921B55F00172402 /* SelectEnemyView.swift in Sources */,
 				A7485DD828C00DE90072311A /* EnemyController.swift in Sources */,
 				A7485DCA28C00DBF0072311A /* WoWBattleCalculatorApp.swift in Sources */,
 			);

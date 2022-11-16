@@ -1,11 +1,12 @@
 {
   "images" : [
     {
-      "filename" : "R1280x0.jpeg",
+      "filename" : "AppIcon29x29.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "AppIcon29x29@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },

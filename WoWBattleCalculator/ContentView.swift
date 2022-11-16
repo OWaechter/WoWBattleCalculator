@@ -59,7 +59,10 @@ struct ContentView: View {
     @State private var greenHits = 0
     @State private var finalDamage = 0
     @State private var bloodDamage = 0
-    @State private var selectedEnemy = Enemy(id: 1, name: "Blue Spider", fightingValue: 5, damage: 4, health: 9, specialTrait: spiderTrait)
+    @State private var showingSelectFirstEnemy = false
+    @State private var showingSelectSecondEnemy = false
+
+    @StateObject var selectEnemy = SelectEnemy()
     
     var calcPlayerDamage:Int{
         do{
@@ -67,7 +70,7 @@ struct ContentView: View {
             var damageToPlayer = 0
             
             defense = redHits + greenHits
-            damageToPlayer = selectedEnemy.damage - defense
+            damageToPlayer = selectEnemy.firstEnemy.damage + selectEnemy.secondEnemy.damage - defense
             if damageToPlayer < 0 {
                 damageToPlayer = 0
             }
@@ -76,7 +79,6 @@ struct ContentView: View {
             
         }
     }
-    
     var calcDamageToMonster:Int{
         do{
             var defense = 0
@@ -85,7 +87,7 @@ struct ContentView: View {
             var damageToMonster = 0
             
             defense = redHits + greenHits
-            possibleDamage = defense - selectedEnemy.damage
+            possibleDamage = defense - selectEnemy.firstEnemy.damage - selectEnemy.secondEnemy.damage
             saveDamage = blueHits + bloodDamage
             
             damageToMonster = saveDamage + (possibleDamage < 0 ? 0 : possibleDamage)
@@ -102,72 +104,261 @@ struct ContentView: View {
         NavigationView{
             ZStack(alignment: .center){
                 VStack(alignment: .center){
-                    Spacer()
-                    VStack(){
-                        
-                        Picker("Enemy", selection: $selectedEnemy){
-                            ForEach(enemies, id: \.id) {
-                                Text($0.name).tag($0.self)
-                                
-                            }
+                    
+                    HStack{
+                        Spacer()
+                        Button(action: {
+                            showingSelectFirstEnemy = true
+                        })
+                        {
+                            Image("UserIcon")
+                        }
+                        .sheet(isPresented:$showingSelectFirstEnemy){
+                            SelectView(selectEnemy: selectEnemy)
                         }
                         
-                        Section{
-                            Text("Battle Value")
-                            Text("\(selectedEnemy.fightingValue)")
+                        
+                        Button(action: {
+                            showingSelectSecondEnemy = true
                             
+                        })
+                        {
+                            Image("UserIcon")
                         }
+                        .sheet(isPresented:$showingSelectSecondEnemy){
+                            SelectView2(selectEnemy: selectEnemy)}
                         
-                        Section{
-                            Text("Damage")
-                            Text("\(selectedEnemy.damage)")
-                        }
-                        
-                        Section{
-                            Text("Health")
-                            Text("\(selectedEnemy.health)")
-                        }
                     }
+                    .padding()
+                    
+                    HStack{
+                        Spacer()
+                        
+                        Text("Battle Value")
+                        Text("\(selectEnemy.firstEnemy.fightingValue)")
+                                                    
+                        Spacer()
+                        
+                        Text("Damage")
+                        Text("\(selectEnemy.firstEnemy.damage)")
+                        
+                        Spacer()
+                        
+                        Text("Health")
+                        Text("\(selectEnemy.firstEnemy.health)")
+                        
+                        Spacer()
+                    }//First Enemy Stats
+                    HStack{
+                        Spacer()
+                        Text("Battle Value")
+                        Text("\(selectEnemy.secondEnemy.fightingValue)")
+                                                    
+                        Spacer()
+                        
+                        Text("Damage")
+                        Text("\(selectEnemy.secondEnemy.damage)")
+                        
+                        Spacer()
+                        
+                        Text("Health")
+                        Text("\(selectEnemy.secondEnemy.health)")
+                        Spacer()
+                    }//Second Enemy Stats
                     
                     Spacer()
                     
                     VStack{
-                        Section{
-                            Stepper("Blue Hits: \(blueHits)", value: $blueHits, in:0...7)
-                        }
-                        Section{
-                            Stepper("Red Hits: \(redHits)", value: $redHits, in:0...7)
-                            
-                        }
-                        Section{
-                            Stepper("Green Hits: \(greenHits)", value: $greenHits, in:0...7)
-                        }
-                        VStack{
-                            Stepper("Blood Damage: \(bloodDamage)", value: $bloodDamage, in:0...15)
-                        }
+                        Spacer()
+                        Text("Blue Hits: \(blueHits)")
                         
-                    }
-                    Spacer()
-                    
+                        Text("Red Hits: \(redHits)")
+                        
+                        Text("Green Hits: \(greenHits)")
+                        
+                        Text("Blood Damage: \(bloodDamage)")
+                        Spacer()
+                        
+                        
+                    }// Hits
                     
                     VStack{
                         Text("Result")
                         Text("Damage to Player: \(calcPlayerDamage)")
                         Text("Damage to Monster: \(calcDamageToMonster)")
-                        Spacer();
-                        Text("Special Trait: ")
-                        Spacer();
-                        Text("\(selectedEnemy.specialTrait)")
-                        Spacer();
-                    }
-                        .navigationTitle("WoW Battle Calculator")
+                        
+                    }// Results
                     
+                    HStack{
+                        ZStack{
+                            Circle()
+                                .strokeBorder(.black,lineWidth: 2)
+                                .background(Circle().fill(.clear))
+                                .position(x:90,y:90)
+                            
+                            Button(action: {
+                                AddHit(Color: "Red")
+                            }) {
+                                Text("+")
+                                    .frame(width: 20 , height: 20, alignment: .center)
+                            }
+                            .background(Color.red)
+                            .foregroundColor(Color.white)
+                            .cornerRadius(5)
+                            .position(x:150,y:80)
+                            
+                            Button(action: {
+                                RemoveHit(Color: "Red")
+                            }) {
+                                Text("-")
+                                    .frame(width: 20 , height: 20, alignment: .center)
+                            }
+                            .background(Color.red)
+                            .foregroundColor(Color.white)
+                            .cornerRadius(5)
+                            .position(x:150,y:130)
+                            
+                            Button(action: {
+                                AddHit(Color: "Green")
+                            }) {
+                                Text("+")
+                                    .frame(width: 20 , height: 20, alignment: .center)
+                            }
+                            .background(Color.green)
+                            .foregroundColor(Color.white)
+                            .cornerRadius(5)
+                            .position(x:100,y:80)
+                            
+                            Button(action: {
+                                RemoveHit(Color: "Green")
+                            }) {
+                                Text("-")
+                                    .frame(width: 20 , height: 20, alignment: .center)
+                            }
+                            .background(Color.green)
+                            .foregroundColor(Color.white)
+                            .cornerRadius(5)
+                            .position(x:100,y:130)
+                            
+                            
+                        } //Red and Green Circle
+                        ZStack{
+                            Circle()
+                                .strokeBorder(.black,lineWidth: 2)
+                                .background(Circle().fill(.clear))
+                                .position(x:90,y:150)
+                            
+                            Button(action: {
+                                AddHit(Color: "BloodDamage")
+                            }) {
+                                Text("+")
+                                    .frame(width: 20 , height: 20, alignment: .center)
+                            }
+                            .background(Color.yellow)
+                            .foregroundColor(Color.white)
+                            .cornerRadius(5)
+                            .position(x:150,y:130)
+                            
+                            Button(action: {
+                                RemoveHit(Color: "BloodDamage")
+                            }) {
+                                Text("-")
+                                    .frame(width: 20 , height: 20, alignment: .center)
+                            }
+                            .background(Color.yellow)
+                            .foregroundColor(Color.white)
+                            .cornerRadius(5)
+                            .position(x:150,y:180)
+                            
+                            
+                        } //BloodDamage Circle
+                        
+                    }// Circles
+                    ZStack{
+                        Circle()
+                            .strokeBorder(.black,lineWidth: 2)
+                            .background(Circle().fill(.clear))
+                            .position(x:90,y:90)
+                        
+                        Button(action: {
+                            AddHit(Color: "Blue")
+                        }) {
+                            Text("+")
+                                .frame(width: 20 , height: 20, alignment: .center)
+                        }
+                        .background(Color.blue)
+                        .foregroundColor(Color.white)
+                        .cornerRadius(5)
+                        .position(x:150,y:80)
+                        
+                        Button(action: {
+                            RemoveHit(Color: "Blue")
+                        }) {
+                            Text("-")
+                                .frame(width: 20 , height: 20, alignment: .center)
+                        }
+                        .background(Color.blue)
+                        .foregroundColor(Color.white)
+                        .cornerRadius(5)
+                        .position(x:150,y:130)
+                        
+                        
+                    } // Blue Circle
                 }
+                .navigationTitle("WoW Battle Calculator")
                 
             }
         }
     }
     
+    func AddHit(Color:String){
+        
+        switch Color{
+        case "Red":
+            if redHits < 7 {
+                redHits += 1
+            }
+        case "Blue":
+            if blueHits < 7 {
+                blueHits += 1
+            }
+        case "Green":
+            if greenHits < 7 {
+                greenHits += 1
+            }
+        case "BloodDamage":
+            if bloodDamage < 7 {
+                bloodDamage += 1
+            }
+            
+        default:
+            print("No color found")
+        }
+    }
+    
+    func RemoveHit(Color:String){
+        
+        switch Color{
+        case "Red":
+            if redHits > 0{
+                redHits -= 1
+            }
+        case "Blue":
+            if blueHits > 0 {
+                blueHits -= 1
+            }
+        case "Green":
+            if greenHits > 0{
+                greenHits -= 1
+            }
+        case "BloodDamage":
+            if bloodDamage > 0 {
+                bloodDamage -= 1
+            }
+        default:
+            print("No color found")
+        }
+    }
 }
 
 
@@ -175,5 +366,7 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+            .previewDevice(PreviewDevice(rawValue: "iPhone 12"))
+            .previewDisplayName("iPhone 12")
     }
 }
