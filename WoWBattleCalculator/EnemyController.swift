@@ -16,6 +16,7 @@ struct Enemy:Identifiable,Hashable{
     var specialTrait:String
 }
 
+
 let spiderTrait = "Die Charaktere können keine Treffer durch Blutschaden erzielen Zum Ende jeder Wurfwiederholung: Der aktive Charakter erhält Betäubungsmarker für jedes 1 und jedes 2 Resultat"
 
 let gouhlTrait = "Die Charaktere können keine Wurfwiederholung machen, unabhängig davon, welche Wurfwiederholungswerte sie haben."

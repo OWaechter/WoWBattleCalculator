@@ -52,8 +52,8 @@ var enemies  = [
     Enemy(id: 41, name: "Red Doomguard", fightingValue: 7, damage: 12, health: 14, specialTrait: doomguardTrait),
     Enemy(id: 42, name: "Green Doomguard", fightingValue: 7, damage: 10, health: 12, specialTrait: doomguardTrait)
 ]
-
 class SelectEnemy: ObservableObject{
+    @Published var enemyList = enemies
     @Published var firstEnemy = enemies[0]
     @Published var secondEnemy = enemies[0]
 }
